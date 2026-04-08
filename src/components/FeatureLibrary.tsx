@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { ArrowUpRight } from "lucide-react";
 
 import { featureIcons } from "../lib/iconMaps";
@@ -25,9 +27,13 @@ export function FeatureLibrary({
           {features.map((feature) => {
             const FeatureIcon = featureIcons[feature.id];
             return (
-              <article className="feature-library__item" key={feature.id}>
+              <article
+                className="feature-library__item feature-library__item--accent"
+                key={feature.id}
+                style={{ "--feature-accent": feature.color } as CSSProperties}
+              >
                 <div className="feature-library__header">
-                  <div className="feature-library__icon">
+                  <div className="feature-library__icon feature-library__icon--accent">
                     <FeatureIcon size={18} />
                   </div>
                   <div>

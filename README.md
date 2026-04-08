@@ -4,6 +4,26 @@ A React + TypeScript demo application for Wyatt that helps Unanet AE firm users 
 
 The app is built for demo use, internal enablement, and future expansion. It is intentionally specific to architecture, engineering, and project-based firms rather than generic AI software.
 
+## Visual theme
+
+The theme was pushed harder into green across the whole app so the experience feels more Wyatt-specific and less like a generic SaaS dashboard.
+
+### What changed
+
+- Shifted all Wyatt capability accents into a green-family palette:
+  - Roundups: emerald
+  - Chores: olive
+  - Chats: teal-green
+  - Integrations: pine
+  - Labs: sage
+- Applied those feature accents directly to:
+  - filter chips
+  - use case cards
+  - feature library cards
+  - role overview feature cards
+  - comparison pills
+  - detail modal feature pill and prompt panel
+
 ## What the app does
 
 - Lets a user choose a role and immediately see:

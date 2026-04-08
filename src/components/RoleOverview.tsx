@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { featureIcons, roleIcons } from "../lib/iconMaps";
@@ -59,7 +61,11 @@ export function RoleOverview({
             {features.map((feature) => {
               const FeatureIcon = featureIcons[feature.id];
               return (
-                <div className="feature-chip-card" key={feature.id}>
+                <div
+                  className="feature-chip-card feature-chip-card--accent"
+                  key={feature.id}
+                  style={{ "--feature-accent": feature.color } as CSSProperties}
+                >
                   <FeatureIcon size={16} />
                   <div>
                     <strong>{feature.title}</strong>

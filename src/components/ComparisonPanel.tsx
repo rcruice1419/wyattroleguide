@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { featureIcons, roleIcons } from "../lib/iconMaps";
 import type { RoleProfile, UseCase, WyattFeature } from "../types";
 
@@ -64,7 +66,11 @@ export function ComparisonPanel({
                     const feature = featureLookup[featureId];
                     const FeatureIcon = featureIcons[feature.id];
                     return (
-                      <span className="pill" key={feature.id}>
+                      <span
+                        className="pill comparison-feature-pill"
+                        key={feature.id}
+                        style={{ "--feature-accent": feature.color } as CSSProperties}
+                      >
                         <FeatureIcon size={14} />
                         {feature.shortTitle}
                       </span>

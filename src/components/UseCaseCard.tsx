@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { motion } from "framer-motion";
 import { Heart, MoveRight } from "lucide-react";
 
@@ -25,8 +27,9 @@ export function UseCaseCard({
 
   return (
     <motion.article
-      className="use-case-card"
+      className="use-case-card use-case-card--accent"
       layout
+      style={{ "--feature-accent": feature.color } as CSSProperties}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.18 }}
     >
@@ -48,7 +51,7 @@ export function UseCaseCard({
       </div>
 
       <div className="tag-row">
-        <span className="pill">
+        <span className="pill pill-feature">
           <FeatureIcon size={14} />
           {feature.title}
         </span>

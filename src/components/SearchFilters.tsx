@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { Filter, Search, X } from "lucide-react";
 
 import { featureIcons } from "../lib/iconMaps";
@@ -65,9 +67,10 @@ export function SearchFilters({
 
           return (
             <button
-              className={`feature-chip ${active ? "is-active" : ""}`}
+              className={`feature-chip feature-chip--accent ${active ? "is-active" : ""}`}
               key={feature.id}
               onClick={() => onToggleFeature(feature.id)}
+              style={{ "--feature-accent": feature.color } as CSSProperties}
               type="button"
             >
               <FeatureIcon size={14} />

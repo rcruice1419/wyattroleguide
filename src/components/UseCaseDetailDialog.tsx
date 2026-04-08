@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, X } from "lucide-react";
 
@@ -26,7 +28,14 @@ export function UseCaseDetailDialog({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
-        <Dialog.Content className="dialog-content">
+        <Dialog.Content
+          className="dialog-content"
+          style={
+            {
+              "--feature-accent": feature?.color ?? "var(--accent-sky)"
+            } as CSSProperties
+          }
+        >
           <div className="dialog-header">
             <div>
               <div className="eyebrow">Wyatt use case detail</div>
@@ -50,7 +59,7 @@ export function UseCaseDetailDialog({
                     </span>
                   ) : null}
                   {feature && FeatureIcon ? (
-                    <span className="pill">
+                    <span className="pill pill-feature">
                       <FeatureIcon size={14} />
                       {feature.title}
                     </span>
