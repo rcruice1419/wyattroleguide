@@ -39,7 +39,6 @@ export function RoleCard({
               <Icon size={18} />
             </div>
             <div className="role-card__meta">
-              <div className="role-card__eyebrow">Role</div>
               <h3>{role.shortTitle}</h3>
             </div>
           </div>
