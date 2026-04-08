@@ -33,13 +33,25 @@ export function RoleCard({
       transition={{ duration: 0.18 }}
     >
       <button className="role-card__focus" onClick={() => onFocus(role.id)}>
-        <div className="role-card__icon-shell">
-          <Icon size={20} />
+        <div className="role-card__header">
+          <div className="role-card__title-wrap">
+            <div className="role-card__icon-shell">
+              <Icon size={18} />
+            </div>
+            <div className="role-card__meta">
+              <div className="role-card__eyebrow">Role</div>
+              <h3>{role.shortTitle}</h3>
+            </div>
+          </div>
+          {isFocused ? <span className="role-card__selected">Selected</span> : null}
         </div>
-        <div className="role-card__meta">
-          <div className="role-card__eyebrow">Role</div>
-          <h3>{role.title}</h3>
-          <p>{role.summary}</p>
+
+        <div className="role-card__highlights">
+          {role.whatTheyCareAbout.slice(0, 2).map((item) => (
+            <span className="role-card__highlight" key={item}>
+              {item}
+            </span>
+          ))}
         </div>
       </button>
 
@@ -51,7 +63,7 @@ export function RoleCard({
           </span>
         </div>
         <button
-          className={`secondary-action ${isCompared ? "is-active" : ""}`}
+          className={`secondary-action role-card__compare ${isCompared ? "is-active" : ""}`}
           disabled={compareDisabled}
           onClick={() => onToggleCompare(role.id)}
           type="button"
