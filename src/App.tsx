@@ -1,6 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, LayoutDashboard, Sparkles, Users2 } from "lucide-react";
+import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 
 import { ComparisonPanel } from "./components/ComparisonPanel";
@@ -14,6 +15,7 @@ import { UseCaseDetailDialog } from "./components/UseCaseDetailDialog";
 import { featureIds, roleProfiles, useCases, wyattFeatures } from "./data/mockData";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { trackEvent } from "./lib/analytics";
+import { featureIcons } from "./lib/iconMaps";
 import type { RoleId, UseCase, WyattFeatureId } from "./types";
 
 const defaultRoleId: RoleId = "project-manager";
@@ -31,6 +33,7 @@ function App() {
     ...featureIds
   ]);
   const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+  const [spotlightUseCaseId, setSpotlightUseCaseId] = useState<string | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
   const [favoriteUseCaseIds, setFavoriteUseCaseIds] = useLocalStorage<string[]>(
     "wyatt-role-guide.favorites",
@@ -179,6 +182,15 @@ function App() {
     });
   }, [activeRole.recommendedFeatureIds, filteredRoleUseCases, wyattFeatures]);
 
+  const spotlightUseCase =
+    filteredRoleUseCases.find((useCase) => useCase.id === spotlightUseCaseId) ??
+    filteredRoleUseCases[0] ??
+    null;
+
+  const spotlightFeature = spotlightUseCase
+    ? featureLookup[spotlightUseCase.featureId]
+    : null;
+
   const toggleFeature = (featureId: WyattFeatureId) => {
     setSelectedFeatures((current) => {
       const next = current.includes(featureId)
@@ -230,6 +242,11 @@ function App() {
   const openUseCase = (useCase: UseCase) => {
     setSelectedUseCase(useCase);
     trackEvent("use_case_opened", { useCaseId: useCase.id });
+  };
+
+  const focusUseCase = (useCase: UseCase) => {
+    setSpotlightUseCaseId(useCase.id);
+    trackEvent("use_case_spotlighted", { useCaseId: useCase.id });
   };
 
   return (
@@ -423,43 +440,133 @@ function App() {
                       <h2>{activeRole.title}</h2>
                     </div>
                     <p>
-                      Specific Wyatt examples, grouped by feature so it is clear
-                      how this role uses Wyatt in day-to-day work.
+                      Scan the full role playbook by feature. Select any item to
+                      preview the prompt, workflow, and outcome without opening a modal.
                     </p>
                   </div>
 
                   {activeRoleUseCaseGroups.length ? (
-                    <div className="role-use-case-stack">
-                      {activeRoleUseCaseGroups.map(({ feature, items }) => (
-                        <section className="role-use-case-group" key={feature.id}>
-                          <div className="role-use-case-group__header">
+                    <div className="use-case-board">
+                      <div className="use-case-board__lanes">
+                        {activeRoleUseCaseGroups.map(({ feature, items }) => {
+                          const FeatureIcon = featureIcons[feature.id];
+
+                          return (
+                            <section
+                              className="use-case-lane use-case-lane--accent"
+                              key={feature.id}
+                              style={{ "--feature-accent": feature.color } as CSSProperties}
+                            >
+                              <div className="use-case-lane__header">
+                                <div className="use-case-lane__title">
+                                  <FeatureIcon size={16} />
+                                  <div>
+                                    <span>{feature.shortTitle}</span>
+                                    <strong>{items.length}</strong>
+                                  </div>
+                                </div>
+                                <span className="lane-count">use cases</span>
+                              </div>
+
+                              <div className="compact-use-case-list">
+                                {items.map((useCase) => (
+                                  <button
+                                    className={`compact-use-case ${
+                                      spotlightUseCase?.id === useCase.id ? "is-active" : ""
+                                    }`}
+                                    key={useCase.id}
+                                    onClick={() => focusUseCase(useCase)}
+                                    type="button"
+                                  >
+                                    <span className="compact-use-case__title">
+                                      {useCase.title}
+                                    </span>
+                                    <span className="compact-use-case__meta">
+                                      {useCase.frequency} / {useCase.valueLevel} value
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </section>
+                          );
+                        })}
+                      </div>
+
+                      {spotlightUseCase && spotlightFeature ? (
+                        <aside
+                          className="use-case-spotlight use-case-spotlight--accent"
+                          style={
+                            {
+                              "--feature-accent": spotlightFeature.color
+                            } as CSSProperties
+                          }
+                        >
+                          <div className="use-case-spotlight__header">
                             <div>
-                              <div className="eyebrow">{feature.title}</div>
-                              <h3>{items.length} use case{items.length === 1 ? "" : "s"}</h3>
-                              <p>{feature.description}</p>
+                              <span className="eyebrow">Selected use case</span>
+                              <h3>{spotlightUseCase.title}</h3>
                             </div>
-                            <span className="results-badge">
-                              Best for {activeRole.shortTitle}
-                              <ArrowRight size={14} />
+                            <span className="pill pill-feature">
+                              {spotlightFeature.shortTitle}
                             </span>
                           </div>
 
-                          <motion.div className="use-case-grid" layout>
-                            <AnimatePresence>
-                              {items.map((useCase) => (
-                                <UseCaseCard
-                                  feature={featureLookup[useCase.featureId]}
-                                  isFavorite={favoriteUseCaseIds.includes(useCase.id)}
-                                  key={useCase.id}
-                                  onOpen={openUseCase}
-                                  onToggleFavorite={toggleFavoriteUseCase}
-                                  useCase={useCase}
-                                />
+                          <div className="spotlight-metrics">
+                            <span>{spotlightUseCase.frequency}</span>
+                            <span>{spotlightUseCase.difficulty}</span>
+                            <span>{spotlightUseCase.valueLevel} value</span>
+                          </div>
+
+                          <div className="spotlight-prompt">
+                            <span className="eyebrow">Prompt / workflow</span>
+                            <p>{spotlightUseCase.examplePrompt}</p>
+                          </div>
+
+                          <div className="spotlight-grid">
+                            <div>
+                              <span className="eyebrow">Solves</span>
+                              <p>{spotlightUseCase.businessProblem}</p>
+                            </div>
+                            <div>
+                              <span className="eyebrow">Measurable outcome:</span>
+                              <p>{spotlightUseCase.measurableOutcome}</p>
+                            </div>
+                          </div>
+
+                          <div className="spotlight-workflow">
+                            <span className="eyebrow">Workflow</span>
+                            <ol>
+                              {spotlightUseCase.workflow.slice(0, 3).map((step) => (
+                                <li key={step}>{step}</li>
                               ))}
-                            </AnimatePresence>
-                          </motion.div>
-                        </section>
-                      ))}
+                            </ol>
+                          </div>
+
+                          <div className="spotlight-actions">
+                            <button
+                              className="primary-button"
+                              onClick={() => openUseCase(spotlightUseCase)}
+                              type="button"
+                            >
+                              View full detail
+                              <ArrowRight size={14} />
+                            </button>
+                            <button
+                              className={`secondary-action ${
+                                favoriteUseCaseIds.includes(spotlightUseCase.id)
+                                  ? "is-active"
+                                  : ""
+                              }`}
+                              onClick={() => toggleFavoriteUseCase(spotlightUseCase.id)}
+                              type="button"
+                            >
+                              {favoriteUseCaseIds.includes(spotlightUseCase.id)
+                                ? "Saved"
+                                : "Save"}
+                            </button>
+                          </div>
+                        </aside>
+                      ) : null}
                     </div>
                   ) : (
                     <div className="empty-state">

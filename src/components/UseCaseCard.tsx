@@ -35,7 +35,6 @@ export function UseCaseCard({
     >
       <div className="use-case-card__header">
         <div className="use-case-card__title-group">
-          <span className="eyebrow">Use case</span>
           <h3>{useCase.title}</h3>
           <p>{useCase.shortDescription}</p>
         </div>
@@ -53,28 +52,25 @@ export function UseCaseCard({
       <div className="tag-row">
         <span className="pill pill-feature">
           <FeatureIcon size={14} />
-          {feature.title}
+          {feature.shortTitle}
         </span>
         <span className="pill pill-subtle">{useCase.frequency}</span>
-        <span className="pill pill-subtle">{useCase.difficulty}</span>
         <span className="pill pill-subtle">{useCase.valueLevel} value</span>
         {roleTitle ? <span className="pill pill-subtle">{roleTitle}</span> : null}
       </div>
 
       <div className="use-case-card__body">
-        <p className="body-emphasis">{useCase.businessProblem}</p>
-        <div className="prompt-preview">
+        <div className="prompt-preview prompt-preview--compact">
           <span className="eyebrow">Example prompt / workflow</span>
           <p>{useCase.examplePrompt}</p>
+        </div>
+        <div className="outcome-preview">
+          <span className="eyebrow">Measurable outcome:</span>
+          <p>{useCase.measurableOutcome}</p>
         </div>
       </div>
 
       <div className="use-case-card__footer">
-        <div>
-          <span className="eyebrow">Measurable outcome:</span>
-          <strong>{useCase.measurableOutcome}</strong>
-        </div>
-
         <button className="primary-inline" onClick={() => onOpen(useCase)} type="button">
           View details
           <MoveRight size={14} />

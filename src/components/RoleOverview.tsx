@@ -46,7 +46,7 @@ export function RoleOverview({
         <div className="content-block">
           <h3>What they care about most</h3>
           <ul className="clean-list">
-            {role.whatTheyCareAbout.map((item) => (
+            {role.whatTheyCareAbout.slice(0, 4).map((item) => (
               <li key={item}>
                 <CheckCircle2 size={16} />
                 <span>{item}</span>
@@ -69,7 +69,7 @@ export function RoleOverview({
                   <FeatureIcon size={16} />
                   <div>
                     <strong>{feature.title}</strong>
-                    <span>{feature.description}</span>
+                    <span>{feature.benefits[0]}</span>
                   </div>
                 </div>
               );
