@@ -548,6 +548,256 @@ export const useCases: UseCase[] = [
     tags: ["profitability", "analysis", "exceptions"]
   }),
   useCase({
+    id: "cfo-gl-investigation-chat",
+    title: "Financial Reporting and GL Investigation",
+    roleId: "cfo-finance-leader",
+    featureId: "chats",
+    shortDescription:
+      "Answers CFO questions about account spikes, overhead variance, and consolidated financial views without building custom reports first.",
+    businessProblem:
+      "Finance leaders need quick, defensible answers on GL movement and reporting structure, but month-end questions often require manual report building and transaction review.",
+    examplePrompt:
+      "Why did GL account 6100 spike in March, show me the transactions behind office overhead variance this month, and build my consolidated financial view by office, discipline, and market.",
+    workflow: [
+      "Ask Wyatt for the GL movement or reporting view in natural language.",
+      "Review the transactions, variance drivers, and breakout views returned.",
+      "Use the result to support close, executive review, or controller follow-up."
+    ],
+    frequency: "Several times per week",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Reduces manual GL review and speeds month-end analysis from hours to minutes.",
+    businessValue:
+      "Gives finance leaders cleaner, faster answers on financial reporting without custom report work.",
+    tags: ["gl", "financial-reporting", "variance"]
+  }),
+  useCase({
+    id: "cfo-staffing-demand-chat",
+    title: "Forecasting, Staffing, and Labor Demand Chat",
+    roleId: "cfo-finance-leader",
+    featureId: "chats",
+    shortDescription:
+      "Connects backlog, staffing demand, and margin pressure by discipline and office.",
+    businessProblem:
+      "CFOs need to see staffing demand before it appears as a margin or delivery problem, but headcount pressure is often hard to connect back to sold and planned work.",
+    examplePrompt:
+      "What headcount will we need by discipline over the next 90 days, where do we have labor demand that exceeds current capacity, and which offices are overstaffed or understaffed based on backlog?",
+    workflow: [
+      "Ask Wyatt for a discipline and office-level staffing forecast.",
+      "Review the capacity gaps, surpluses, and the backlog behind them.",
+      "Use the answer to guide hiring, reallocation, and financial planning decisions."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves staffing visibility before shortages or idle capacity show up in financial results.",
+    businessValue:
+      "Helps the CFO connect backlog, staffing demand, and future margin sooner.",
+    tags: ["staffing", "forecasting", "backlog"]
+  }),
+  useCase({
+    id: "cfo-billing-cash-chat",
+    title: "Billing, Cash, and Collections Risk Chat",
+    roleId: "cfo-finance-leader",
+    featureId: "chats",
+    shortDescription:
+      "Surfaces blocked billing, high-WIP / low-billing projects, and overdue AR balances with the highest cash impact.",
+    businessProblem:
+      "Revenue conversion and cash risk are often spread across billing, project, and collections workflows, making it hard for finance to prioritize quickly.",
+    examplePrompt:
+      "What is blocking billing this period, which projects have high WIP but low billing progress, and which overdue AR balances have the largest cash impact?",
+    workflow: [
+      "Ask Wyatt for the highest-impact billing and collections bottlenecks.",
+      "Review blocked billing, WIP-to-billing mismatches, and large overdue balances.",
+      "Use the result to focus finance and project follow-up on the biggest cash levers."
+    ],
+    frequency: "Daily during billing and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves prioritization of the billing and AR issues with the largest cash effect.",
+    businessValue:
+      "Helps finance convert revenue and cash faster by focusing on the right bottlenecks first.",
+    tags: ["billing", "cash", "collections"]
+  }),
+  useCase({
+    id: "cfo-policy-anomaly-chat",
+    title: "Policy Compliance and Anomaly Chat",
+    roleId: "cfo-finance-leader",
+    featureId: "chats",
+    shortDescription:
+      "Lets the CFO inspect policy exceptions such as admin-hour cap violations, unusual expenses, and missing approvals tied to time or expense activity.",
+    businessProblem:
+      "Control issues and anomalies are easy to miss until they become bigger finance or audit problems, especially when they require combing through raw transactions.",
+    examplePrompt:
+      "Who exceeded admin time limits this month, which expenses look out of policy or unusual, and show me missing approvals tied to time or expense activity.",
+    workflow: [
+      "Ask Wyatt for the current policy and approval exceptions.",
+      "Review the people, projects, and transactions behind the anomalies.",
+      "Use the result to tighten controls and direct controller or finance ops follow-up."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Reduces manual anomaly review and improves speed of policy exception detection.",
+    businessValue:
+      "Helps finance leadership tighten controls without combing through raw operational detail.",
+    tags: ["policy", "anomalies", "controls"]
+  }),
+  useCase({
+    id: "cfo-executive-financial-package-roundup",
+    title: "Executive Financial Package",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A monthly finance leadership package for revenue, EBITDA, cash, AR, WIP, backlog, utilization, margin, and top variance drivers.",
+    businessProblem:
+      "The monthly executive package is high-value but still too manual in many firms, especially when multiple breakouts and GL narratives are required.",
+    examplePrompt:
+      "Build the monthly executive financial package with revenue, EBITDA, cash, AR, WIP, backlog, utilization, margin, actual versus budget versus forecast, and top GL movements by office, discipline, and market.",
+    workflow: [
+      "Aggregate financial KPIs, variance drivers, and GL movement.",
+      "Build the consolidated view plus office, discipline, and market breakouts.",
+      "Publish a finance leadership-ready package after close."
+    ],
+    frequency: "Monthly refresh, monthly build after close",
+    difficulty: "Moderate",
+    valueLevel: "Strategic",
+    measurableOutcome:
+      "Cuts manual executive-package assembly and improves consistency across month-end reporting.",
+    businessValue:
+      "Gives the CFO and finance leadership a cleaner monthly operating package with less manual prep.",
+    tags: ["executive-package", "close", "financials"]
+  }),
+  useCase({
+    id: "cfo-project-profitability-watchlist-roundup",
+    title: "Project Profitability Watchlist",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly watchlist of projects below target margin or showing deterioration, write-downs, and burn-rate exceptions.",
+    businessProblem:
+      "Profit leakage is often visible in project patterns before it is clear in the income statement, but CFOs need that view surfaced consistently.",
+    examplePrompt:
+      "Build a weekly project profitability watchlist showing projects below target margin, the largest month-over-month margin deterioration, and write-down or burn-rate exceptions.",
+    workflow: [
+      "Scan the project portfolio for margin deterioration and exception patterns.",
+      "Highlight the projects below target profitability.",
+      "Summarize what needs CFO attention this week."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves early identification of profit leakage before it accumulates into larger write-downs.",
+    businessValue:
+      "Helps the CFO move from reactive project margin review to earlier intervention.",
+    tags: ["profitability", "watchlist", "write-downs"]
+  }),
+  useCase({
+    id: "cfo-billing-cash-conversion-roundup",
+    title: "Billing and Cash Conversion",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A daily billing and collections view showing blocked billing, high-WIP / low-billing projects, AR aging, and owner next steps.",
+    businessProblem:
+      "Finance needs a live operating view of revenue conversion, but billing and collections blockers are usually spread across PM, accounting, and client workflows.",
+    examplePrompt:
+      "Build my billing and cash conversion roundup with ready-to-bill versus blocked, high-WIP / low-billing projects, AR aging tied to PMs and project status, and suggested next steps by owner.",
+    workflow: [
+      "Refresh billing, WIP, and AR indicators daily.",
+      "Highlight blocked items and high-impact cash risks.",
+      "Show owner-based next steps for finance, accounting, and PM follow-up."
+    ],
+    frequency: "Daily during billing and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves daily focus on the issues slowing revenue conversion and cash collection.",
+    businessValue:
+      "Keeps finance centered on the billing and AR actions with the highest cash impact.",
+    tags: ["billing", "cash-conversion", "ar"]
+  }),
+  useCase({
+    id: "cfo-staffing-capacity-forecast-roundup",
+    title: "Staffing and Capacity Forecast",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly discipline and office-level forecast of demand, capacity gaps, surpluses, and margin pressure from staffing shortages.",
+    businessProblem:
+      "Finance often feels staffing pressure only after it has already damaged delivery, margin, or utilization performance.",
+    examplePrompt:
+      "Build a staffing and capacity forecast showing demand by discipline for the next 30 to 180 days, capacity gaps and surpluses by office, the projects driving hiring or reallocation needs, and the margin impact of staffing shortages.",
+    workflow: [
+      "Forecast labor demand by discipline, office, and time horizon.",
+      "Compare it to current staffed capacity.",
+      "Highlight the hiring, reallocation, and margin implications."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Gives finance earlier insight into future staffing constraints and cost implications.",
+    businessValue:
+      "Connects workforce planning to backlog, utilization, and margin before the financial damage is visible.",
+    tags: ["capacity", "staffing", "margin-impact"]
+  }),
+  useCase({
+    id: "cfo-controls-exceptions-roundup",
+    title: "Controls and Exceptions",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly control view covering missing approvals, admin-hour cap exceptions, unusual expense patterns, and repeated policy issues.",
+    businessProblem:
+      "Finance leaders need a compact control dashboard, but exception monitoring often requires too much manual inspection.",
+    examplePrompt:
+      "Build a controls and exceptions roundup showing missing approvals, admin-hour cap exceptions, unusual expense patterns, and repeated policy exceptions by team or manager.",
+    workflow: [
+      "Pull approval, time, and expense exceptions into one control view.",
+      "Group repeated issues by team, manager, and pattern.",
+      "Summarize where finance should review, coach, or escalate."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves visibility into finance and policy exceptions without manual audit-style review.",
+    businessValue:
+      "Helps the CFO tighten controls while keeping attention on the highest-risk exception patterns.",
+    tags: ["controls", "policy", "exceptions"]
+  }),
+  useCase({
+    id: "cfo-board-financial-snapshot-roundup",
+    title: "Board Financial Snapshot",
+    roleId: "cfo-finance-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A board-facing monthly financial snapshot with topline metrics, what changed, key risks, and profitability and cash trend charts.",
+    businessProblem:
+      "Board materials require a more concise and narrative-ready presentation than internal finance reporting, but still draw from the same financial truth.",
+    examplePrompt:
+      "Build a board financial snapshot with headline revenue, EBITDA, cash, backlog, utilization, what changed this month, top financial risks and mitigations, a portfolio profitability chart, and a cash plus AR trend chart.",
+    workflow: [
+      "Summarize the top-level financial picture for the board.",
+      "Highlight the key changes, risks, and mitigations.",
+      "Generate the charts and narrative needed for executive review."
+    ],
+    frequency: "Monthly build",
+    difficulty: "Moderate",
+    valueLevel: "Strategic",
+    measurableOutcome:
+      "Reduces the effort of turning internal reporting into a board-level financial narrative.",
+    businessValue:
+      "Gives finance leadership a cleaner bridge from internal reporting to board-ready storytelling.",
+    tags: ["board", "snapshot", "executive"]
+  }),
+  useCase({
     id: "cfo-close-variance-chore",
     title: "Month-End Variance Review Chore",
     roleId: "cfo-finance-leader",
@@ -571,6 +821,181 @@ export const useCases: UseCase[] = [
     businessValue:
       "Turns close from a data assembly exercise into a decision meeting.",
     tags: ["close", "forecast", "variance"]
+  }),
+  useCase({
+    id: "cfo-project-profitability-watchlist-chore",
+    title: "Project Profitability Watchlist",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly review of margin deterioration, write-down risk, and burn acceleration across the project portfolio.",
+    businessProblem:
+      "CFOs need a recurring habit for catching profit leakage early, but portfolio review often depends on someone manually assembling the watchlist first.",
+    examplePrompt:
+      "Each week, flag project margin deterioration, write-down risk, and burn acceleration that need CFO attention.",
+    workflow: [
+      "Review the project portfolio for margin deterioration patterns.",
+      "Highlight write-down and burn-rate risk.",
+      "Publish a weekly CFO watchlist."
+    ],
+    frequency: "Weekly",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves consistency of weekly profitability review and reduces reliance on ad hoc analysis.",
+    businessValue:
+      "Creates a repeatable finance rhythm for catching project profit leakage earlier.",
+    tags: ["profitability", "weekly-review", "burn-rate"]
+  }),
+  useCase({
+    id: "cfo-billing-readiness-chore",
+    title: "Billing Readiness Check",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Checks blocked billing, missing approvals, and incomplete PM steps during mid-period and close.",
+    businessProblem:
+      "Revenue conversion slows when blocked billing is only reviewed reactively or too late in the cycle.",
+    examplePrompt:
+      "During mid-period and close, identify blocked billing, missing approvals, and incomplete PM steps that are slowing invoice release.",
+    workflow: [
+      "Scan billing readiness across active projects.",
+      "Group blocked items by issue type and owner.",
+      "Route the resulting action list to finance, accounting, or PMs."
+    ],
+    frequency: "Mid-period and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves finance visibility into billing blockers before they delay revenue conversion further.",
+    businessValue:
+      "Helps the CFO focus on the process issues slowing invoice release and cash timing.",
+    tags: ["billing", "close", "approvals"]
+  }),
+  useCase({
+    id: "cfo-ar-cash-watchlist-chore",
+    title: "AR and Cash Risk Watchlist",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly collections-oriented review of overdue balances, large exposures, and cash priorities.",
+    businessProblem:
+      "Collections risk is easy to acknowledge and hard to prioritize unless finance has a recurring operating list tied to size and urgency.",
+    examplePrompt:
+      "Each week, rank overdue balances by size and aging, highlight the largest exposures, and suggest the top collection priorities.",
+    workflow: [
+      "Review AR aging and overdue balances.",
+      "Rank the highest cash-impact exposures.",
+      "Publish finance and project follow-up priorities."
+    ],
+    frequency: "Weekly",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves collection focus by consistently surfacing the balances with the biggest cash impact.",
+    businessValue:
+      "Turns AR review into a practical cash-priority workflow rather than a static aging report.",
+    tags: ["ar", "cash", "watchlist"]
+  }),
+  useCase({
+    id: "cfo-gl-anomaly-review-chore",
+    title: "GL Anomaly Review",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly anomaly check on unusual account movement, transaction spikes, and likely causes.",
+    businessProblem:
+      "GL anomalies often get reviewed late because no one is proactively surfacing unusual account movement each week.",
+    examplePrompt:
+      "Each week, identify unusual account movements, transaction spikes, and the most likely causes that finance should review.",
+    workflow: [
+      "Scan GL activity for unusual movement patterns.",
+      "Highlight the accounts and transactions behind the spikes.",
+      "Return a concise list for finance review."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves the speed and consistency of GL anomaly review between closes.",
+    businessValue:
+      "Gives finance a structured weekly habit for catching unusual account movement earlier.",
+    tags: ["gl", "anomalies", "weekly"]
+  }),
+  useCase({
+    id: "cfo-staffing-demand-alert-chore",
+    title: "Staffing Demand Alert",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly alert on discipline gaps, backlog pressure, and the financial impact of staffing shortages.",
+    businessProblem:
+      "Finance needs recurring visibility into staffing pressure before it appears as lower margin, missed revenue, or under-delivery.",
+    examplePrompt:
+      "Each week, flag discipline staffing gaps, backlog pressure, and the likely margin impact of staffing shortages.",
+    workflow: [
+      "Review demand versus capacity by discipline and office.",
+      "Highlight the largest near-term staffing pressures.",
+      "Summarize the likely financial impact and follow-up."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves early visibility into the financial implications of staffing shortages.",
+    businessValue:
+      "Helps the CFO connect labor demand alerts directly to financial planning and delivery risk.",
+    tags: ["staffing", "alert", "margin-impact"]
+  }),
+  useCase({
+    id: "cfo-policy-exception-sweep-chore",
+    title: "Policy Exception Sweep",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly review of admin caps, expense anomalies, missing comments, and late approvals.",
+    businessProblem:
+      "Control exceptions spread quietly unless finance has a standing workflow for monitoring them at the right level of detail.",
+    examplePrompt:
+      "Each week, review admin caps, expense anomalies, missing comments, and late approvals that need finance attention.",
+    workflow: [
+      "Inspect time, expense, and approval activity for policy issues.",
+      "Group the exceptions by severity and pattern.",
+      "Publish a weekly finance control review list."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves visibility into policy exceptions and reduces manual control review effort.",
+    businessValue:
+      "Keeps control issues visible without requiring line-by-line review from finance leadership.",
+    tags: ["policy", "exceptions", "controls"]
+  }),
+  useCase({
+    id: "cfo-executive-pre-meeting-brief-chore",
+    title: "Executive Pre-Meeting Brief",
+    roleId: "cfo-finance-leader",
+    featureId: "chores",
+    shortDescription:
+      "Prepares a monthly finance brief with top decisions, risks, and talking points before executive meetings.",
+    businessProblem:
+      "Finance leaders often know the numbers but still need a concise operating narrative before executive and board discussions.",
+    examplePrompt:
+      "Before the monthly executive meeting, prepare a brief with the top financial decisions, risks, and talking points I should bring into the room.",
+    workflow: [
+      "Review the latest financial and operational signals.",
+      "Summarize what changed and what decisions matter most.",
+      "Package a concise monthly finance talking-points brief."
+    ],
+    frequency: "Monthly",
+    difficulty: "Easy",
+    valueLevel: "Strategic",
+    measurableOutcome:
+      "Reduces prep time for executive financial discussions and improves consistency in finance messaging.",
+    businessValue:
+      "Turns finance review into a stronger executive communication workflow, not just a report handoff.",
+    tags: ["executive", "brief", "talking-points"]
   }),
   useCase({
     id: "controller-invoice-exception-chore",
@@ -646,6 +1071,81 @@ export const useCases: UseCase[] = [
     businessValue:
       "Improves finance responsiveness without sacrificing accounting rigor.",
     tags: ["gl", "transactions", "audit"]
+  }),
+  useCase({
+    id: "controller-billing-cash-conversion-roundup",
+    title: "Billing and Cash Conversion",
+    roleId: "controller",
+    featureId: "roundups",
+    shortDescription:
+      "A controller-facing billing and collections view showing blocked billing, high-WIP / low-billing projects, AR aging, and owner next steps.",
+    businessProblem:
+      "Controllers need the same cash-conversion view as the CFO, but with more operational focus on what accounting and PMs need to clear next.",
+    examplePrompt:
+      "Build a billing and cash conversion roundup showing ready-to-bill versus blocked, high-WIP / low-billing projects, AR aging by PM and project status, and suggested next actions by owner.",
+    workflow: [
+      "Refresh billing and AR indicators daily.",
+      "Identify blocked billing and slow-conversion patterns.",
+      "Return the next actions needed by accounting and PMs."
+    ],
+    frequency: "Daily during billing and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves controller visibility into the exact billing and AR issues slowing revenue conversion.",
+    businessValue:
+      "Makes billing and collections management more operational and less fragmented for the controller.",
+    tags: ["billing", "cash-conversion", "controller"]
+  }),
+  useCase({
+    id: "controller-controls-exceptions-roundup",
+    title: "Controls and Exceptions",
+    roleId: "controller",
+    featureId: "roundups",
+    shortDescription:
+      "A controller view of missing approvals, admin-hour cap exceptions, expense anomalies, and repeated policy issues.",
+    businessProblem:
+      "Controllers often sit at the point where accounting control issues become operational cleanup work, but the exception patterns are not always visible in one place.",
+    examplePrompt:
+      "Build a controls and exceptions roundup showing missing approvals, admin-hour cap exceptions, unusual expense patterns, and repeated policy exceptions by team or manager.",
+    workflow: [
+      "Aggregate approval, time, and expense issues into one view.",
+      "Group repeated problems by manager, team, and pattern.",
+      "Surface the items needing controller follow-up."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves controller visibility into policy and process exceptions before they become bigger accounting problems.",
+    businessValue:
+      "Helps the controller monitor control issues in a practical, repeatable way.",
+    tags: ["controls", "policy", "controller"]
+  }),
+  useCase({
+    id: "controller-policy-exception-sweep-chore",
+    title: "Policy Exception Sweep",
+    roleId: "controller",
+    featureId: "chores",
+    shortDescription:
+      "Runs a weekly review of admin caps, expense anomalies, missing comments, and late approvals for controller follow-up.",
+    businessProblem:
+      "Controllers often own the cleanup path on policy and approval issues, but the exceptions are not always surfaced consistently.",
+    examplePrompt:
+      "Each week, review admin caps, expense anomalies, missing comments, and late approvals and group the issues that need controller follow-up.",
+    workflow: [
+      "Inspect time, expense, and approval activity for policy exceptions.",
+      "Group the issues by pattern and severity.",
+      "Publish the controller's weekly exception review list."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves consistency of controller follow-up on policy and approval exceptions.",
+    businessValue:
+      "Turns exception review into a practical controller workflow instead of ad hoc cleanup.",
+    tags: ["policy", "exceptions", "controller"]
   }),
   useCase({
     id: "pm-project-health-chat",
@@ -1123,6 +1623,56 @@ export const useCases: UseCase[] = [
     tags: ["operations", "delivery", "multi-office"]
   }),
   useCase({
+    id: "ops-project-profitability-watchlist-roundup",
+    title: "Project Profitability Watchlist",
+    roleId: "operations-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly operations watchlist of projects below target margin, month-over-month deterioration, and write-down or burn-rate exceptions.",
+    businessProblem:
+      "Operations needs a practical cross-project view of profitability issues when the root cause is likely in delivery behavior, staffing, or execution.",
+    examplePrompt:
+      "Build a weekly project profitability watchlist showing projects below target margin, the largest month-over-month margin deterioration, and write-down or burn-rate exceptions.",
+    workflow: [
+      "Scan the portfolio for project profitability deterioration.",
+      "Group the issues by PM, office, and delivery pattern.",
+      "Return the watchlist operations should review this week."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Helps operations identify the delivery-side causes of profit leakage earlier.",
+    businessValue:
+      "Connects project profitability deterioration to operational intervention instead of leaving it solely in finance review.",
+    tags: ["profitability", "operations", "watchlist"]
+  }),
+  useCase({
+    id: "ops-staffing-capacity-forecast-roundup",
+    title: "Staffing and Capacity Forecast",
+    roleId: "operations-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly operations view of demand by discipline, office-level capacity gaps, and staffing issues affecting delivery and margin.",
+    businessProblem:
+      "Operations needs the staffing forecast not just to inform hiring, but to manage delivery risk and reallocation before projects slip.",
+    examplePrompt:
+      "Build a staffing and capacity forecast showing discipline demand, office-level capacity gaps and surpluses, the projects driving hiring or reallocation needs, and the likely delivery impact.",
+    workflow: [
+      "Forecast demand and compare it to current staffed capacity.",
+      "Highlight office and discipline bottlenecks.",
+      "Return the projects and teams that need operational action."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves operations visibility into staffing constraints before they become widespread delivery issues.",
+    businessValue:
+      "Turns staffing forecasting into an operational risk-management tool, not just a finance view.",
+    tags: ["staffing", "capacity", "operations"]
+  }),
+  useCase({
     id: "ops-pm-portfolio-roundup",
     title: "PM Portfolio Overview",
     roleId: "operations-leader",
@@ -1396,6 +1946,81 @@ export const useCases: UseCase[] = [
     businessValue:
       "Turns billing follow-up into a cleaner queue instead of a status hunt.",
     tags: ["invoicing", "follow-up", "accounting"]
+  }),
+  useCase({
+    id: "acct-billing-cash-conversion-roundup",
+    title: "Billing and Cash Conversion",
+    roleId: "accounting-staff",
+    featureId: "roundups",
+    shortDescription:
+      "An accounting view of blocked billing, high-WIP / low-billing projects, AR aging, and the next action by owner.",
+    businessProblem:
+      "Accounting teams often work the details of billing and AR every day, but they need a cleaner operating surface than separate invoice, WIP, and aging checks.",
+    examplePrompt:
+      "Build a billing and cash conversion roundup showing ready-to-bill versus blocked, high-WIP / low-billing projects, AR aging by PM and project, and suggested next actions by owner.",
+    workflow: [
+      "Refresh billing, WIP, and AR indicators.",
+      "Highlight the items slowing invoice release and collection.",
+      "Return the next accounting and PM actions needed."
+    ],
+    frequency: "Daily during billing and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Gives accounting staff a clearer daily working board for revenue conversion and collections follow-up.",
+    businessValue:
+      "Improves throughput by connecting billing and AR actions in one operational view.",
+    tags: ["billing", "cash-conversion", "accounting"]
+  }),
+  useCase({
+    id: "acct-policy-approval-exceptions-chore",
+    title: "Policy and Approval Exceptions Queue",
+    roleId: "accounting-staff",
+    featureId: "chores",
+    shortDescription:
+      "Creates a recurring queue of missing approvals, unusual expenses, and missing comments that need accounting follow-up.",
+    businessProblem:
+      "Accounting staff are often the first to encounter approval and policy exceptions, but they need a better queue than ad hoc discovery during invoice and expense review.",
+    examplePrompt:
+      "Each week, create a queue of missing approvals, unusual expenses, and missing comments that need accounting review or follow-up.",
+    workflow: [
+      "Inspect time, expense, and approval records for exceptions.",
+      "Group them by issue type and owner.",
+      "Publish an accounting follow-up queue."
+    ],
+    frequency: "Weekly",
+    difficulty: "Easy",
+    valueLevel: "Core",
+    measurableOutcome:
+      "Reduces the time accounting spends manually finding approval and policy issues while working other processes.",
+    businessValue:
+      "Turns scattered exception discovery into a cleaner accounting workflow.",
+    tags: ["approvals", "exceptions", "accounting"]
+  }),
+  useCase({
+    id: "exec-board-financial-snapshot-roundup",
+    title: "Board Financial Snapshot",
+    roleId: "executive-principal",
+    featureId: "roundups",
+    shortDescription:
+      "A board-facing executive view of revenue, EBITDA, cash, backlog, utilization, top financial risks, and profitability trends.",
+    businessProblem:
+      "Executives need a concise board-level financial picture that connects firm performance to key risks without reading the full finance package.",
+    examplePrompt:
+      "Build a board financial snapshot with headline revenue, EBITDA, cash, backlog, utilization, what changed this month, top financial risks and mitigations, a portfolio profitability chart, and a cash plus AR trend chart.",
+    workflow: [
+      "Summarize the top-level financial picture for executive review.",
+      "Highlight what changed and what needs attention.",
+      "Return a board-ready snapshot with charts and narrative."
+    ],
+    frequency: "Monthly build",
+    difficulty: "Moderate",
+    valueLevel: "Strategic",
+    measurableOutcome:
+      "Reduces executive prep time for board and principal financial discussions.",
+    businessValue:
+      "Gives executives a concise financial narrative without requiring them to parse the full finance package.",
+    tags: ["board", "executive", "financials"]
   }),
   useCase({
     id: "acct-project-financial-lookup-chat",
