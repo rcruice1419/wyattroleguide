@@ -98,7 +98,7 @@ export function UseCaseDetailDialog({
                   <p>{useCase.businessValue}</p>
                 </section>
                 <section className="dialog-side-card">
-                  <span className="eyebrow">Measurable outcome</span>
+                  <span className="eyebrow">Measurable outcome:</span>
                   <strong>{useCase.measurableOutcome}</strong>
                 </section>
                 <section className="dialog-side-card">

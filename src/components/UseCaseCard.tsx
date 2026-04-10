@@ -71,7 +71,7 @@ export function UseCaseCard({
 
       <div className="use-case-card__footer">
         <div>
-          <span className="eyebrow">Measurable outcome</span>
+          <span className="eyebrow">Measurable outcome:</span>
           <strong>{useCase.measurableOutcome}</strong>
         </div>
 
