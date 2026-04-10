@@ -673,6 +673,156 @@ export const useCases: UseCase[] = [
     tags: ["project", "health", "delivery"]
   }),
   useCase({
+    id: "pm-margin-burn-chat",
+    title: "Margin, WIP, and Burn Investigation",
+    roleId: "project-manager",
+    featureId: "chats",
+    shortDescription:
+      "Lets PMs ask focused profitability questions about margin drop, write-offs, burn rate, and projects trending over budget.",
+    businessProblem:
+      "PMs need exact project financial answers quickly, but margin and burn issues are often buried in multiple reports and spreadsheets.",
+    examplePrompt:
+      "Which of my projects have the biggest margin drop this month, what are the top drivers of write-offs on Project X, and which jobs are trending over budget based on burn rate versus plan?",
+    workflow: [
+      "Start with a portfolio or project-level profitability question.",
+      "Review the margin, WIP, write-off, and burn-rate drivers Wyatt returns.",
+      "Use the answer to decide where intervention is needed this week."
+    ],
+    frequency: "Several times per week",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Cuts project profitability analysis from hours of report pulling to a few minutes of guided review.",
+    businessValue:
+      "Gives PMs fewer clicks, less spreadsheet work, and faster interventions when projects start slipping.",
+    tags: ["margin", "wip", "burn-rate"]
+  }),
+  useCase({
+    id: "pm-billing-bottleneck-chat",
+    title: "Billing Bottleneck Chat",
+    roleId: "project-manager",
+    featureId: "chats",
+    shortDescription:
+      "Answers the day-to-day billing status questions PMs struggle with during mid-period and close.",
+    businessProblem:
+      "PMs often know billing is delayed but do not know exactly what is stuck, who owns the next step, or which review is missing.",
+    examplePrompt:
+      "What is holding up billing this period for my projects, which invoices are stuck in draft or pending review, and which PMs have not completed bill review yet?",
+    workflow: [
+      "Ask Wyatt for blocked billing items across your active jobs.",
+      "Review the reason each invoice is stalled and the current owner.",
+      "Use the result to clear PM review and accounting handoff bottlenecks faster."
+    ],
+    frequency: "Daily during billing cycles",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Reduces PM time spent hunting billing status and shortens invoice-release delays caused by unclear ownership.",
+    businessValue:
+      "Solves a common PM pain point around bill review and billing readiness with direct answers instead of status chasing.",
+    tags: ["billing", "bottlenecks", "bill-review"]
+  }),
+  useCase({
+    id: "pm-timesheet-labor-chat",
+    title: "Timesheet and Labor Cost Control Chat",
+    roleId: "project-manager",
+    featureId: "chats",
+    shortDescription:
+      "Helps PMs identify missing time, wrong labor code usage, and overtime spikes on their projects.",
+    businessProblem:
+      "Time entry and labor-code issues quietly distort project financials until someone takes time to inspect them closely.",
+    examplePrompt:
+      "Who on my projects has missing timesheets, what teams are charging the wrong labor codes, and where did we spike overtime last week and on which tasks?",
+    workflow: [
+      "Ask Wyatt for time-entry and labor-cost exceptions on your projects.",
+      "Review the people, tasks, and codes driving the issues.",
+      "Use the answer to correct bad charging behavior before it distorts billing and margin."
+    ],
+    frequency: "Several times per week",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Finds labor-code and time-entry issues earlier, reducing cleanup and improving project cost accuracy.",
+    businessValue:
+      "Gives PMs a practical way to control labor leakage without manual timesheet review.",
+    tags: ["timesheets", "labor-codes", "overtime"]
+  }),
+  useCase({
+    id: "pm-capacity-planning-chat",
+    title: "Staffing and Capacity Planning Chat",
+    roleId: "project-manager",
+    featureId: "chats",
+    shortDescription:
+      "Answers staffing questions about upcoming roles, underutilized matches, and projects at risk because of delivery gaps.",
+    businessProblem:
+      "PMs usually know they need people soon, but it takes too long to translate project plans into specific staffing actions.",
+    examplePrompt:
+      "What roles do I need in the next four weeks based on project plans, who is underutilized but has the right skills for Project Y, and which projects are at risk due to staffing gaps?",
+    workflow: [
+      "Ask Wyatt for a staffing view tied to project plans and schedules.",
+      "Review the needed roles, likely candidate matches, and at-risk jobs.",
+      "Use the answer to coordinate with operations or the resource manager."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves staffing lead time and reduces avoidable schedule slips caused by late resourcing.",
+    businessValue:
+      "Makes project staffing discussions more actionable and less dependent on manual coordination.",
+    tags: ["staffing", "capacity", "resourcing"]
+  }),
+  useCase({
+    id: "pm-portfolio-overview-roundup",
+    title: "PM Portfolio Overview",
+    roleId: "project-manager",
+    featureId: "roundups",
+    shortDescription:
+      "A roundup across all PM-owned projects showing health, billing blockers, unapproved time, AR exposure, and upcoming milestones.",
+    businessProblem:
+      "PMs need one place to monitor the handful of projects and exceptions that need attention now, not separate reports for each topic.",
+    examplePrompt:
+      "Build my PM portfolio overview with at-risk projects, unapproved time, AR exposure where allowed, upcoming milestones, and the top exceptions to investigate.",
+    workflow: [
+      "Refresh KPIs across all PM-owned projects.",
+      "Highlight margin drop, burn acceleration, billing blockers, and milestone risk.",
+      "Show trend charts for burn and forecast versus plan."
+    ],
+    frequency: "Daily refresh, weekly build",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Gives PMs a single operating board for their project portfolio instead of a scattered set of project checks.",
+    businessValue:
+      "Improves daily portfolio awareness and helps PMs focus on the few issues that actually need intervention.",
+    tags: ["portfolio", "exceptions", "milestones"]
+  }),
+  useCase({
+    id: "pm-single-project-health-roundup",
+    title: "Project Health Roundup",
+    roleId: "project-manager",
+    featureId: "roundups",
+    shortDescription:
+      "A single-project view combining scope, schedule, budget, changes, and a written risk summary for the delivery team.",
+    businessProblem:
+      "When a project is in a critical phase, PMs need a refreshable project room that combines status, changes, and next decisions.",
+    examplePrompt:
+      "Build a single-project health roundup with scope, schedule, and budget snapshot, key changes since last refresh, risks, issues, and decisions needed.",
+    workflow: [
+      "Refresh the project's schedule, budget, and recent changes.",
+      "Summarize the biggest issues and decisions needed in writing.",
+      "Link out to supporting detail tables for deeper follow-up."
+    ],
+    frequency: "Daily during critical phases",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Cuts time spent preparing project status meetings and keeps the team aligned on the same facts.",
+    businessValue:
+      "Turns project review into a live operating view instead of a manually assembled update.",
+    tags: ["single-project", "status", "risks"]
+  }),
+  useCase({
     id: "pm-billing-readiness-roundup",
     title: "Billing Readiness Roundup",
     roleId: "project-manager",
@@ -696,6 +846,206 @@ export const useCases: UseCase[] = [
     businessValue:
       "Keeps billing from stalling because the PM lacks clean visibility into blockers.",
     tags: ["billing", "pm-review", "close"]
+  }),
+  useCase({
+    id: "pm-staffing-capacity-roundup",
+    title: "Staffing and Capacity Lookahead",
+    roleId: "project-manager",
+    featureId: "roundups",
+    shortDescription:
+      "A weekly staffing view showing upcoming demand by role, overbooked and underutilized resources, and likely reallocation options.",
+    businessProblem:
+      "PMs can see the project work coming, but they often cannot see future staffing conflicts clearly enough to act early.",
+    examplePrompt:
+      "Build a staffing and capacity lookahead for the next two to eight weeks showing role demand, overbooked and underutilized resources, and recommended reallocations.",
+    workflow: [
+      "Forecast upcoming demand by discipline and role.",
+      "Compare the work to available and overbooked staff.",
+      "List conflicts and likely reallocation options."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves staffing planning and reduces reactive scrambling before project phases begin.",
+    businessValue:
+      "Gives PMs a clean bridge between the project plan and the resourcing conversation.",
+    tags: ["staffing", "lookahead", "conflicts"]
+  }),
+  useCase({
+    id: "pm-client-progress-roundup",
+    title: "Weekly Project Progress One-Pager",
+    roleId: "project-manager",
+    featureId: "roundups",
+    shortDescription:
+      "A client-facing weekly progress roundup with status, accomplishments, next steps, risks, and a simple progress chart.",
+    businessProblem:
+      "PMs spend too much time turning internal project information into a client-ready weekly update.",
+    examplePrompt:
+      "Create a weekly client project progress one-pager with on-track or at-risk status, a short narrative, completed work, planned work, risks and mitigations, and a project progress chart.",
+    workflow: [
+      "Pull the week's completed work, upcoming work, and key issues.",
+      "Generate a concise narrative plus client-ready bullets.",
+      "Publish a one-pager that can be refreshed weekly or exported as a PDF."
+    ],
+    frequency: "Weekly refresh",
+    difficulty: "Moderate",
+    valueLevel: "Core",
+    measurableOutcome:
+      "Reduces effort required to produce consistent client progress updates each week.",
+    businessValue:
+      "Makes client communication more repeatable and less dependent on manual reformatting.",
+    tags: ["client-facing", "weekly-update", "progress"]
+  }),
+  useCase({
+    id: "pm-weekly-health-pack-chore",
+    title: "Weekly Project Health Pack",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Runs every week to package burn versus budget, margin trend, and the key anomalies the PM should review first.",
+    businessProblem:
+      "Project health reviews lose value when PMs walk into Monday without a clean picture of what changed over the weekend or late last week.",
+    examplePrompt:
+      "Every Monday at 7am, deliver a project health pack with burn versus budget, margin trend, and the key anomalies I should investigate first.",
+    workflow: [
+      "Check burn, budget, margin, and change signals across active projects.",
+      "Rank the biggest anomalies and shifts.",
+      "Deliver a Monday review pack for the PM."
+    ],
+    frequency: "Weekly",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves PM readiness at the start of the week and reduces time spent assembling a status picture.",
+    businessValue:
+      "Turns project review into a repeatable management habit instead of a manual exercise.",
+    tags: ["monday-pack", "burn", "margin"]
+  }),
+  useCase({
+    id: "pm-billing-readiness-chore",
+    title: "Billing Readiness Check",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Runs during mid-period and close to identify what is blocking billing and who owns the next step.",
+    businessProblem:
+      "PMs frequently know billing is late but do not have a consistent process for surfacing blockers and owners before close pressure builds.",
+    examplePrompt:
+      "During mid-period and close, identify what is blocking billing on my projects and assign the next step to the right owner.",
+    workflow: [
+      "Scan billing workflow states and blockers.",
+      "Group blocked items by cause and owner.",
+      "Send the PM a clean next-step list."
+    ],
+    frequency: "Mid-period and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Shortens the time from issue discovery to billing action during the most time-sensitive part of the cycle.",
+    businessValue:
+      "Helps PMs keep invoice flow moving without manually checking each blocking condition.",
+    tags: ["billing", "close", "workflow"]
+  }),
+  useCase({
+    id: "pm-bill-review-nudges-chore",
+    title: "Bill Review Nudges",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Sends reminders for projects not yet reviewed for billing, with the reviewer and impacted period clearly identified.",
+    businessProblem:
+      "Bill review gets delayed when no one has a lightweight nudge system showing exactly what still needs PM action.",
+    examplePrompt:
+      "During close, remind me which projects have not completed bill review, who the reviewer is, and which billing period is affected.",
+    workflow: [
+      "Check which projects still need PM bill review.",
+      "Identify the reviewer and the impacted period.",
+      "Send targeted reminders until the review is completed."
+    ],
+    frequency: "During close",
+    difficulty: "Easy",
+    valueLevel: "Core",
+    measurableOutcome:
+      "Reduces missed or late bill reviews and cuts avoidable billing delays.",
+    businessValue:
+      "Keeps PM review from becoming the hidden blocker in the billing cycle.",
+    tags: ["bill-review", "nudges", "close"]
+  }),
+  useCase({
+    id: "pm-timesheet-compliance-chore",
+    title: "Timesheet Compliance Check",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Runs daily to highlight missing time by person and the projects affected.",
+    businessProblem:
+      "Missing time quietly creates billing and reporting problems, but PMs usually find out too late to fix it cleanly.",
+    examplePrompt:
+      "Every day, identify missing time by person and the impacted projects so I can follow up before it affects billing.",
+    workflow: [
+      "Scan time-entry completion for project contributors.",
+      "Group missing entries by person and project.",
+      "Return a daily follow-up list for the PM."
+    ],
+    frequency: "Daily",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves time-entry compliance and reduces project-level cleanup near billing deadlines.",
+    businessValue:
+      "Gives PMs a simple daily workflow for preventing avoidable time-entry issues.",
+    tags: ["timesheets", "compliance", "daily"]
+  }),
+  useCase({
+    id: "pm-ar-risk-watchlist-chore",
+    title: "AR Risk Watchlist",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Creates a weekly watchlist of overdue invoices tied to PM-owned projects with aging and suggested next steps.",
+    businessProblem:
+      "PMs often hear about AR risk late, even though they may be the best person to unblock the client conversation or project issue causing it.",
+    examplePrompt:
+      "Each week, show overdue invoices tied to my projects, the aging, and the suggested next steps I should take with accounting or the client team.",
+    workflow: [
+      "Pull overdue AR associated with the PM's projects.",
+      "Rank the invoices by age and size.",
+      "Return the likely next action for each item."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves PM awareness of collection risk and helps surface project issues affecting cash flow sooner.",
+    businessValue:
+      "Connects PM behavior and client follow-up to cash collection outcomes.",
+    tags: ["ar", "cash", "collections"]
+  }),
+  useCase({
+    id: "pm-scope-creep-detector-chore",
+    title: "Scope Creep Detector",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Monitors labor mix shifts, spend acceleration, and low remaining budget so PMs can catch emerging scope issues early.",
+    businessProblem:
+      "Scope creep usually appears first as pattern changes in labor, spend, or remaining fee, but PMs rarely get those signals in time.",
+    examplePrompt:
+      "Each week, detect labor mix shifts, spend acceleration, and low remaining budget that suggest scope creep on my projects.",
+    workflow: [
+      "Compare labor mix and spend patterns to expected project behavior.",
+      "Highlight low remaining budget and unusual acceleration.",
+      "Return a watchlist of projects likely experiencing scope creep."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Finds scope and fee erosion signals earlier, before they become write-offs or client escalations.",
+    businessValue:
+      "Helps PMs protect budget and margin with earlier warning signs.",
+    tags: ["scope-creep", "budget", "fee"]
   }),
   useCase({
     id: "pm-staffing-gap-chore",
@@ -723,6 +1073,31 @@ export const useCases: UseCase[] = [
     tags: ["staffing", "resource", "risk"]
   }),
   useCase({
+    id: "pm-exceptions-inbox-chore",
+    title: "Exceptions Inbox",
+    roleId: "project-manager",
+    featureId: "chores",
+    shortDescription:
+      "Builds a daily inbox of anomalies, late approvals, and only the exceptions that actually require PM attention.",
+    businessProblem:
+      "PMs cannot act on every data point, but they do need a disciplined way to see only the anomalies that matter today.",
+    examplePrompt:
+      "Every day, send me only the anomalies and late approvals that need my attention across my projects.",
+    workflow: [
+      "Filter project activity down to true exceptions and late approvals.",
+      "Rank the items by urgency and likely impact.",
+      "Publish a small, actionable daily inbox."
+    ],
+    frequency: "Daily",
+    difficulty: "Easy",
+    valueLevel: "Core",
+    measurableOutcome:
+      "Cuts noise for PMs and improves follow-through on the few issues that need immediate action.",
+    businessValue:
+      "Makes Wyatt feel like an operating assistant instead of another dashboard to monitor.",
+    tags: ["exceptions", "approvals", "daily"]
+  }),
+  useCase({
     id: "ops-delivery-command-center-roundup",
     title: "Delivery Command Center",
     roleId: "operations-leader",
@@ -748,6 +1123,81 @@ export const useCases: UseCase[] = [
     tags: ["operations", "delivery", "multi-office"]
   }),
   useCase({
+    id: "ops-pm-portfolio-roundup",
+    title: "PM Portfolio Overview",
+    roleId: "operations-leader",
+    featureId: "roundups",
+    shortDescription:
+      "A cross-PM roundup showing at-risk projects, unapproved time, billing blockers, and upcoming milestones across the delivery organization.",
+    businessProblem:
+      "Operations leaders need to see which PMs and projects need help now, not just an overall delivery heatmap.",
+    examplePrompt:
+      "Build a PM portfolio overview across the firm with at-risk projects, unapproved time, billing blockers, AR exposure where allowed, and upcoming milestones.",
+    workflow: [
+      "Aggregate project, billing, and time-entry signals across PM portfolios.",
+      "Highlight the top exceptions to investigate by PM and office.",
+      "Show trend charts for burn and forecast versus plan."
+    ],
+    frequency: "Daily refresh, weekly build",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Gives operations a clearer view of where PM coaching or intervention is needed before issues spread.",
+    businessValue:
+      "Makes portfolio oversight more actionable by showing PM-level exception patterns, not just firm-level totals.",
+    tags: ["pm-portfolio", "operations", "exceptions"]
+  }),
+  useCase({
+    id: "ops-billing-bottleneck-chat",
+    title: "Billing Bottleneck Portfolio Chat",
+    roleId: "operations-leader",
+    featureId: "chats",
+    shortDescription:
+      "Answers operations questions about where billing is stuck, which PMs have not completed review, and what is slowing release across the portfolio.",
+    businessProblem:
+      "Operations leaders often need to break billing bottlenecks across multiple PMs, but they do not always know where the process is stuck or who owns the next action.",
+    examplePrompt:
+      "Which invoices are stuck in draft or pending review, what is holding up billing across the portfolio, and which PMs have not completed bill review yet?",
+    workflow: [
+      "Ask Wyatt for blocked billing patterns across PMs or offices.",
+      "Review the blockers, owners, and affected periods.",
+      "Use the answer to target operational follow-up and escalation."
+    ],
+    frequency: "Daily during close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Cuts time spent identifying portfolio-wide billing blockers and speeds intervention where PM review is lagging.",
+    businessValue:
+      "Gives operations a direct way to clear billing friction across teams instead of waiting for status updates.",
+    tags: ["billing", "operations", "pm-review"]
+  }),
+  useCase({
+    id: "ops-timesheet-labor-chat",
+    title: "Timesheet and Labor Exception Chat",
+    roleId: "operations-leader",
+    featureId: "chats",
+    shortDescription:
+      "Surfaces missing time, wrong labor code usage, and overtime spikes across teams, offices, or project portfolios.",
+    businessProblem:
+      "Operations can see margin and schedule outcomes, but the labor behavior causing them is often harder to isolate quickly across the business.",
+    examplePrompt:
+      "Which teams have missing timesheets, where are people charging the wrong labor codes, and where did we spike overtime last week and on which tasks?",
+    workflow: [
+      "Ask Wyatt for labor exceptions across the selected portfolio.",
+      "Review the people, teams, and tasks behind the issues.",
+      "Use the answer to direct corrective follow-up with PMs and department leaders."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Finds operational labor issues earlier and reduces the lag between exception detection and correction.",
+    businessValue:
+      "Helps operations address the labor patterns that quietly drive delivery and margin problems.",
+    tags: ["labor", "timesheets", "portfolio"]
+  }),
+  useCase({
     id: "ops-system-coverage-integration",
     title: "ERP + CRM + Delivery Integration Map",
     roleId: "operations-leader",
@@ -771,6 +1221,56 @@ export const useCases: UseCase[] = [
     businessValue:
       "Helps operations leadership prioritize the next system connection with clear business rationale.",
     tags: ["integrations", "systems", "coverage"]
+  }),
+  useCase({
+    id: "ops-billing-readiness-chore",
+    title: "Billing Readiness Portfolio Check",
+    roleId: "operations-leader",
+    featureId: "chores",
+    shortDescription:
+      "Runs during mid-period and close to identify what is blocking billing across PMs and which owner needs to move next.",
+    businessProblem:
+      "Operations often owns the escalation path when billing stalls across teams, but the current blockers and owners are not always visible in one place.",
+    examplePrompt:
+      "During mid-period and close, show what is blocking billing across PMs, the reason each item is stalled, and the next owner required to move it.",
+    workflow: [
+      "Scan billing readiness across projects and PMs.",
+      "Group blocked items by cause, owner, and office.",
+      "Return an operations-ready escalation and follow-up list."
+    ],
+    frequency: "Mid-period and close",
+    difficulty: "Easy",
+    valueLevel: "High",
+    measurableOutcome:
+      "Improves cross-team billing follow-up and reduces portfolio-wide delays at close.",
+    businessValue:
+      "Lets operations act as the clearing function for billing bottlenecks instead of relying on fragmented updates.",
+    tags: ["billing", "close", "portfolio"]
+  }),
+  useCase({
+    id: "ops-scope-creep-watchlist-chore",
+    title: "Scope Creep Watchlist",
+    roleId: "operations-leader",
+    featureId: "chores",
+    shortDescription:
+      "Builds a weekly watchlist of projects showing labor mix shifts, spend acceleration, and low remaining budget across the delivery organization.",
+    businessProblem:
+      "Operations leaders need earlier warning on pattern-based project deterioration, especially when the same issues are appearing across multiple PMs or offices.",
+    examplePrompt:
+      "Each week, detect projects showing labor mix shifts, spend acceleration, or low remaining budget and group them by PM and office.",
+    workflow: [
+      "Scan projects for scope creep signals and fee pressure patterns.",
+      "Group the watchlist by PM, office, and issue type.",
+      "Return a coaching and escalation view for operations."
+    ],
+    frequency: "Weekly",
+    difficulty: "Moderate",
+    valueLevel: "High",
+    measurableOutcome:
+      "Highlights project deterioration patterns across the portfolio early enough for operations to intervene.",
+    businessValue:
+      "Gives operations a practical way to spot repeated delivery and fee problems before they become systemic.",
+    tags: ["scope-creep", "operations", "watchlist"]
   }),
   useCase({
     id: "ops-forecast-gap-chore",
