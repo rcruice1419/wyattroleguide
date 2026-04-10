@@ -1,6 +1,6 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import { AnimatePresence, motion } from "framer-motion";
-import { LayoutDashboard, Sparkles, Users2 } from "lucide-react";
+import { ArrowRight, LayoutDashboard, Sparkles, Users2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { ComparisonPanel } from "./components/ComparisonPanel";
@@ -21,6 +21,7 @@ const defaultRoleId: RoleId = "project-manager";
 function App() {
   const [activeTab, setActiveTab] = useState("by-role");
   const [activeRoleId, setActiveRoleId] = useState<RoleId>(defaultRoleId);
+  const [previewRoleId, setPreviewRoleId] = useState<RoleId | null>(null);
   const [comparedRoleIds, setComparedRoleIds] = useState<RoleId[]>([
     "project-manager",
     "cfo-finance-leader"
@@ -63,6 +64,35 @@ function App() {
   );
 
   const activeRole = roleLookup[activeRoleId];
+  const previewRole = previewRoleId ? roleLookup[previewRoleId] : activeRole;
+
+  const roleUseCases = useMemo(
+    () =>
+      Object.fromEntries(
+        roleProfiles.map((role) => [
+          role.id,
+          useCases.filter((useCase) => useCase.roleId === role.id)
+        ])
+      ) as Record<RoleId, UseCase[]>,
+    []
+  );
+
+  const roleFeatureCounts = useMemo(
+    () =>
+      Object.fromEntries(
+        roleProfiles.map((role) => {
+          const entries = wyattFeatures.map((feature) => ({
+            label: feature.shortTitle,
+            count: roleUseCases[role.id].filter(
+              (useCase) => useCase.featureId === feature.id
+            ).length
+          }));
+
+          return [role.id, entries.filter((entry) => entry.count > 0)];
+        })
+      ) as Record<RoleId, Array<{ label: string; count: number }>>,
+    [roleUseCases]
+  );
 
   const filteredRoleUseCases = useMemo(
     () =>
@@ -129,6 +159,25 @@ function App() {
     feature,
     items: filteredGlobalUseCases.filter((useCase) => useCase.featureId === feature.id)
   }));
+
+  const activeRoleUseCaseGroups = useMemo(() => {
+    const grouped = wyattFeatures
+      .map((feature) => ({
+        feature,
+        items: filteredRoleUseCases.filter((useCase) => useCase.featureId === feature.id)
+      }))
+      .filter((group) => group.items.length > 0);
+
+    const recommendedOrder = new Map(
+      activeRole.recommendedFeatureIds.map((featureId, index) => [featureId, index])
+    );
+
+    return grouped.sort((left, right) => {
+      const leftOrder = recommendedOrder.get(left.feature.id) ?? 99;
+      const rightOrder = recommendedOrder.get(right.feature.id) ?? 99;
+      return leftOrder - rightOrder;
+    });
+  }, [activeRole.recommendedFeatureIds, filteredRoleUseCases, wyattFeatures]);
 
   const toggleFeature = (featureId: WyattFeatureId) => {
     setSelectedFeatures((current) => {
@@ -251,7 +300,50 @@ function App() {
                   <div className="eyebrow">Role selector</div>
                   <h2>Choose a role to personalize the view</h2>
                 </div>
-                <p>Focus one role, or compare up to three side by side.</p>
+                <p>Preview any role, then click to lock it in. Compare up to three side by side.</p>
+              </div>
+
+              <div className="role-preview-strip">
+                <div className="role-preview-strip__summary">
+                  <span className="eyebrow">
+                    {previewRoleId ? "Previewing role" : "Selected role"}
+                  </span>
+                  <h3>{previewRole.title}</h3>
+                  <p>{previewRole.summary}</p>
+                </div>
+                <div className="role-preview-strip__meta">
+                  <div className="role-preview-strip__group">
+                    <span className="eyebrow">Primary concerns</span>
+                    <div className="tag-row">
+                      {previewRole.whatTheyCareAbout.slice(0, 3).map((item) => (
+                        <span className="pill pill-subtle" key={item}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="role-preview-strip__group">
+                    <span className="eyebrow">Use case mix</span>
+                    <div className="tag-row">
+                      {roleFeatureCounts[previewRole.id].map((item) => (
+                        <span className="pill" key={item.label}>
+                          {item.label}
+                          <strong>{item.count}</strong>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="role-preview-strip__group role-preview-strip__group--cta">
+                    <span className="eyebrow">Best starting point</span>
+                    <strong>
+                      {
+                        useCaseLookup[
+                          previewRole.startingPoint.easiestUseCaseId
+                        ]?.title
+                      }
+                    </strong>
+                  </div>
+                </div>
               </div>
 
               <div className="role-grid">
@@ -260,16 +352,19 @@ function App() {
                     compareDisabled={
                       comparedRoleIds.length >= 3 && !comparedRoleIds.includes(role.id)
                     }
+                    featureCounts={roleFeatureCounts[role.id]}
                     isCompared={comparedRoleIds.includes(role.id)}
                     isFocused={role.id === activeRoleId}
                     key={role.id}
                     onFocus={(roleId) => {
                       setActiveRoleId(roleId);
+                      setPreviewRoleId(null);
                       trackEvent("role_focused", { roleId });
                     }}
+                    onPreview={setPreviewRoleId}
                     onToggleCompare={toggleCompareRole}
                     role={role}
-                    useCaseCount={useCases.filter((useCase) => useCase.roleId === role.id).length}
+                    useCaseCount={roleUseCases[role.id].length}
                   />
                 ))}
               </div>
@@ -328,26 +423,44 @@ function App() {
                       <h2>{activeRole.title}</h2>
                     </div>
                     <p>
-                      Specific Wyatt examples for what this role needs every day,
-                      every week, and during critical workflows.
+                      Specific Wyatt examples, grouped by feature so it is clear
+                      how this role uses Wyatt in day-to-day work.
                     </p>
                   </div>
 
-                  {filteredRoleUseCases.length ? (
-                    <motion.div className="use-case-grid" layout>
-                      <AnimatePresence>
-                        {filteredRoleUseCases.map((useCase) => (
-                          <UseCaseCard
-                            feature={featureLookup[useCase.featureId]}
-                            isFavorite={favoriteUseCaseIds.includes(useCase.id)}
-                            key={useCase.id}
-                            onOpen={openUseCase}
-                            onToggleFavorite={toggleFavoriteUseCase}
-                            useCase={useCase}
-                          />
-                        ))}
-                      </AnimatePresence>
-                    </motion.div>
+                  {activeRoleUseCaseGroups.length ? (
+                    <div className="role-use-case-stack">
+                      {activeRoleUseCaseGroups.map(({ feature, items }) => (
+                        <section className="role-use-case-group" key={feature.id}>
+                          <div className="role-use-case-group__header">
+                            <div>
+                              <div className="eyebrow">{feature.title}</div>
+                              <h3>{items.length} use case{items.length === 1 ? "" : "s"}</h3>
+                              <p>{feature.description}</p>
+                            </div>
+                            <span className="results-badge">
+                              Best for {activeRole.shortTitle}
+                              <ArrowRight size={14} />
+                            </span>
+                          </div>
+
+                          <motion.div className="use-case-grid" layout>
+                            <AnimatePresence>
+                              {items.map((useCase) => (
+                                <UseCaseCard
+                                  feature={featureLookup[useCase.featureId]}
+                                  isFavorite={favoriteUseCaseIds.includes(useCase.id)}
+                                  key={useCase.id}
+                                  onOpen={openUseCase}
+                                  onToggleFavorite={toggleFavoriteUseCase}
+                                  useCase={useCase}
+                                />
+                              ))}
+                            </AnimatePresence>
+                          </motion.div>
+                        </section>
+                      ))}
+                    </div>
                   ) : (
                     <div className="empty-state">
                       No use cases match the current search and feature filters for
