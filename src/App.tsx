@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 
 import { FeatureLibrary } from "./components/FeatureLibrary";
+import { InterviewBuilder } from "./components/InterviewBuilder";
 import { OnboardingQuiz } from "./components/OnboardingQuiz";
 import { RoleCard } from "./components/RoleCard";
 import { RoleOverview } from "./components/RoleOverview";
@@ -355,6 +356,19 @@ function App() {
                 ))}
               </div>
             </section>
+
+            <InterviewBuilder
+              features={wyattFeatures}
+              onOpenUseCase={openUseCase}
+              onRoleChange={(roleId) => {
+                setActiveRoleId(roleId);
+                setPreviewRoleId(null);
+                trackEvent("interview_role_selected", { roleId });
+              }}
+              roles={roleProfiles}
+              selectedRoleId={activeRoleId}
+              useCases={useCases}
+            />
 
             <SearchFilters
               features={wyattFeatures}
