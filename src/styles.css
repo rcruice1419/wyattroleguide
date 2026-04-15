@@ -24,6 +24,12 @@
   --accent-violet: #6f9474;
   --accent-navy: #102033;
   --success: #2f9e44;
+  --wyatt-dark: #07130e;
+  --wyatt-dark-2: #0c2118;
+  --wyatt-dark-3: #123524;
+  --wyatt-dark-line: rgba(180, 225, 199, 0.16);
+  --wyatt-dark-text: #f3fbf6;
+  --wyatt-dark-muted: #a9c4b7;
 }
 
 * {
@@ -279,7 +285,6 @@ p {
 
 .section-heading,
 .controls-panel__top,
-.comparison-panel__header,
 .feature-section__header {
   display: flex;
   gap: 16px;
@@ -288,46 +293,64 @@ p {
 }
 
 .section-heading h2,
-.controls-panel h2,
-.comparison-panel h2 {
+.controls-panel h2 {
   margin-bottom: 4px;
   font-size: 1.5rem;
 }
 
+.role-selector-panel {
+  padding: 18px;
+}
+
+.role-selector-panel .section-heading {
+  align-items: center;
+}
+
+.role-selector-panel .section-heading h2 {
+  font-size: 1.25rem;
+}
+
+.role-selector-panel .section-heading p {
+  max-width: 220px;
+  font-size: 0.92rem;
+  text-align: right;
+}
+
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(172px, 1fr));
+  gap: 9px;
+  margin-top: 10px;
 }
 
 .role-preview-strip {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.3fr);
-  gap: 16px;
-  padding: 16px;
-  margin-top: 18px;
+  grid-template-columns: minmax(190px, 0.75fr) minmax(0, 1.45fr);
+  gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   background:
     linear-gradient(135deg, rgba(47, 157, 99, 0.08), rgba(255, 255, 255, 0.82));
 }
 
 .role-preview-strip h3 {
-  margin-bottom: 6px;
-  font-size: 1.35rem;
+  margin-bottom: 0;
+  font-size: 1.05rem;
+  line-height: 1.1;
 }
 
 .role-preview-strip__meta {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 8px;
 }
 
 .role-preview-strip__group {
-  padding: 12px;
+  padding: 9px;
   border: 1px solid rgba(16, 41, 29, 0.08);
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.6);
 }
 
@@ -346,23 +369,28 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 156px;
-  padding: 16px;
+  min-height: 104px;
+  padding: 10px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--surface-soft);
 }
 
 .role-card.is-focused {
-  border-color: rgba(47, 157, 99, 0.4);
-  box-shadow: inset 0 0 0 1px rgba(47, 157, 99, 0.18);
-  background: linear-gradient(180deg, rgba(47, 157, 99, 0.08), rgba(255, 255, 255, 0.85));
+  border-color: rgba(47, 157, 99, 0.62);
+  background:
+    radial-gradient(circle at top right, rgba(72, 187, 120, 0.24), transparent 8rem),
+    linear-gradient(145deg, var(--wyatt-dark-3), var(--wyatt-dark-2));
+  color: var(--wyatt-dark-text);
+  box-shadow:
+    inset 0 0 0 1px rgba(151, 216, 176, 0.16),
+    0 14px 30px rgba(7, 19, 14, 0.18);
 }
 
 .role-card__focus {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   padding: 0;
   border: 0;
@@ -376,11 +404,14 @@ p {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .role-card__title-wrap {
   justify-content: flex-start;
+  flex: 1;
+  min-width: 0;
 }
 
 .role-card__icon-shell,
@@ -398,21 +429,35 @@ p {
   color: var(--accent-navy);
 }
 
-.role-card__meta h3 {
-  margin-bottom: 0;
-  font-size: 1rem;
-  line-height: 1.1;
+.role-card__icon-shell {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
 }
 
-.role-card__selected {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: rgba(47, 157, 99, 0.12);
-  color: var(--accent-sky);
+.role-card__meta h3 {
+  margin-bottom: 0;
+  font-size: clamp(0.82rem, 0.72rem + 0.32vw, 0.94rem);
+  line-height: 1.14;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.role-card__meta span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
   font-size: 0.74rem;
   font-weight: 700;
+}
+
+.role-card.is-focused .role-card__meta span {
+  color: var(--wyatt-dark-muted);
+}
+
+.role-card.is-focused .role-card__icon-shell {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--wyatt-dark-text);
 }
 
 .role-card__highlights {
@@ -434,24 +479,33 @@ p {
 
 .role-card__feature-snapshot {
   display: flex;
-  gap: 8px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
 .role-card__feature-pill {
   display: inline-flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
-  padding: 5px 8px;
-  border-radius: 10px;
+  padding: 4px 6px;
+  border-radius: 8px;
   background: rgba(47, 157, 99, 0.08);
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 700;
 }
 
 .role-card__feature-pill strong {
   color: var(--text);
+}
+
+.role-card.is-focused .role-card__feature-pill {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--wyatt-dark-muted);
+}
+
+.role-card.is-focused .role-card__feature-pill strong {
+  color: var(--wyatt-dark-text);
 }
 
 .role-card__footer,
@@ -465,16 +519,6 @@ p {
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.role-card__footer {
-  justify-content: space-between;
-  margin-top: 12px;
-}
-
-.role-card__compare {
-  padding: 8px 10px;
-  font-size: 0.84rem;
 }
 
 .secondary-action,
@@ -750,7 +794,6 @@ p {
   background: rgba(16, 32, 51, 0.05);
 }
 
-.comparison-grid,
 .use-case-grid {
   display: grid;
   gap: 14px;
@@ -873,17 +916,48 @@ p {
   transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
 }
 
-.compact-use-case:hover,
-.compact-use-case.is-active {
+.compact-use-case:hover {
   border-color: color-mix(in srgb, var(--feature-accent) 42%, white);
   background: color-mix(in srgb, var(--feature-accent) 10%, white);
   transform: translateY(-1px);
+}
+
+.compact-use-case.is-active {
+  position: relative;
+  border-color: color-mix(in srgb, var(--feature-accent) 72%, white);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--feature-accent) 28%, var(--wyatt-dark-3)),
+      var(--wyatt-dark-2)
+    );
+  color: var(--wyatt-dark-text);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--feature-accent) 28%, transparent),
+    0 14px 28px rgba(7, 19, 14, 0.18);
 }
 
 .compact-use-case__title {
   font-size: 0.91rem;
   font-weight: 800;
   line-height: 1.2;
+}
+
+.compact-use-case.is-active .compact-use-case__meta {
+  color: var(--wyatt-dark-muted);
+}
+
+.compact-use-case__selected {
+  margin-top: 4px;
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--feature-accent) 42%, white);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .use-case-spotlight {
@@ -899,13 +973,16 @@ p {
 }
 
 .use-case-spotlight--accent {
-  border-color: color-mix(in srgb, var(--feature-accent) 30%, white);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--feature-accent) 8%, white),
-    rgba(255, 255, 255, 0.82)
-  );
-  box-shadow: 0 18px 40px color-mix(in srgb, var(--feature-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--feature-accent) 36%, var(--wyatt-dark-line));
+  background:
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--feature-accent) 22%, transparent),
+      transparent 16rem
+    ),
+    linear-gradient(160deg, var(--wyatt-dark-3), var(--wyatt-dark-2) 48%, var(--wyatt-dark));
+  color: var(--wyatt-dark-text);
+  box-shadow: 0 26px 60px rgba(7, 19, 14, 0.24);
 }
 
 .use-case-spotlight__header {
@@ -920,6 +997,21 @@ p {
   font-size: 1.34rem;
 }
 
+.use-case-spotlight .eyebrow {
+  color: color-mix(in srgb, var(--feature-accent) 58%, var(--wyatt-dark-muted));
+}
+
+.use-case-spotlight p,
+.use-case-spotlight .spotlight-workflow li {
+  color: var(--wyatt-dark-muted);
+}
+
+.use-case-spotlight .pill-feature {
+  border-color: color-mix(in srgb, var(--feature-accent) 42%, transparent);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+}
+
 .spotlight-metrics {
   gap: 8px;
   flex-wrap: wrap;
@@ -928,7 +1020,8 @@ p {
 .spotlight-metrics span {
   padding: 7px 10px;
   border-radius: 999px;
-  background: rgba(16, 32, 51, 0.06);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-muted);
 }
 
 .spotlight-prompt,
@@ -939,10 +1032,21 @@ p {
   background: color-mix(in srgb, var(--feature-accent) 8%, white);
 }
 
+.use-case-spotlight .spotlight-prompt {
+  border-left-color: color-mix(in srgb, var(--feature-accent) 74%, white);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .spotlight-prompt p,
 .spotlight-grid p,
 .spotlight-workflow li {
   color: var(--text);
+}
+
+.use-case-spotlight .spotlight-prompt p,
+.use-case-spotlight .spotlight-grid p,
+.use-case-spotlight .spotlight-workflow li {
+  color: var(--wyatt-dark-muted);
 }
 
 .spotlight-grid {
@@ -957,6 +1061,12 @@ p {
   border: 1px solid rgba(16, 32, 51, 0.08);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.58);
+}
+
+.use-case-spotlight .spotlight-grid > div,
+.use-case-spotlight .spotlight-workflow {
+  border-color: var(--wyatt-dark-line);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .spotlight-workflow ol {
@@ -989,12 +1099,18 @@ p {
   flex-wrap: wrap;
 }
 
-.comparison-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  margin-top: 18px;
+.use-case-spotlight .primary-button {
+  border-color: color-mix(in srgb, var(--feature-accent) 44%, transparent);
+  background: color-mix(in srgb, var(--feature-accent) 26%, rgba(255, 255, 255, 0.08));
+  color: var(--wyatt-dark-text);
 }
 
-.comparison-card,
+.use-case-spotlight .secondary-action {
+  border-color: var(--wyatt-dark-line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+}
+
 .use-case-card,
 .feature-section {
   border: 1px solid var(--line);
@@ -1002,31 +1118,8 @@ p {
   background: rgba(255, 255, 255, 0.58);
 }
 
-.comparison-card {
-  padding: 18px;
-}
-
-.comparison-card__title {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 18px;
-}
-
-.comparison-card__title h3,
 .use-case-card h3 {
   margin-bottom: 6px;
-}
-
-.comparison-card__section {
-  margin-top: 16px;
-}
-
-.comparison-card__secondary {
-  display: block;
-  margin-top: 8px;
-  color: var(--text-muted);
-  font-size: 0.92rem;
 }
 
 .use-case-grid {
@@ -1172,8 +1265,10 @@ p {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: rgba(7, 16, 26, 0.56);
-  backdrop-filter: blur(6px);
+  background:
+    radial-gradient(circle at 50% 10%, rgba(47, 157, 99, 0.18), transparent 26rem),
+    rgba(4, 12, 8, 0.76);
+  backdrop-filter: blur(8px);
 }
 
 .dialog-content {
@@ -1192,6 +1287,21 @@ p {
   transform: translate(-50%, -50%);
 }
 
+.dialog-content--use-case {
+  border-color: var(--wyatt-dark-line);
+  background:
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--feature-accent) 24%, transparent),
+      transparent 22rem
+    ),
+    linear-gradient(145deg, #10291d 0%, var(--wyatt-dark-2) 44%, var(--wyatt-dark) 100%);
+  color: var(--wyatt-dark-text);
+  box-shadow:
+    0 34px 96px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 .dialog-content--quiz {
   width: min(920px, calc(100vw - 32px));
 }
@@ -1206,6 +1316,14 @@ p {
 
 .dialog-header [data-radix-dialog-title] {
   font-size: 1.9rem;
+}
+
+.dialog-content--use-case .dialog-header [data-radix-dialog-title] {
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case .dialog-header [data-radix-dialog-description] {
+  color: var(--wyatt-dark-muted);
 }
 
 .dialog-grid,
@@ -1232,10 +1350,33 @@ p {
   background: rgba(255, 255, 255, 0.74);
 }
 
+.dialog-content--use-case .dialog-section,
+.dialog-content--use-case .dialog-side-card {
+  border-color: var(--wyatt-dark-line);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
 .dialog-section h3,
 .quiz-question h3 {
   margin-bottom: 10px;
   font-size: 1.02rem;
+}
+
+.dialog-content--use-case h3,
+.dialog-content--use-case strong,
+.dialog-content--use-case .step-list li,
+.dialog-content--use-case .dialog-side-card p {
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case p,
+.dialog-content--use-case .dialog-side-card .tag-row {
+  color: var(--wyatt-dark-muted);
+}
+
+.dialog-content--use-case .eyebrow {
+  color: color-mix(in srgb, var(--feature-accent) 54%, var(--wyatt-dark-muted));
 }
 
 .quote-box {
@@ -1244,6 +1385,38 @@ p {
   border-radius: 0 14px 14px 0;
   background: color-mix(in srgb, var(--feature-accent) 8%, white);
   color: var(--text);
+}
+
+.dialog-content--use-case .quote-box {
+  border-left-color: color-mix(in srgb, var(--feature-accent) 72%, white);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case .pill {
+  border: 1px solid var(--wyatt-dark-line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case .pill-subtle {
+  color: var(--wyatt-dark-muted);
+}
+
+.dialog-content--use-case .pill-feature {
+  border-color: color-mix(in srgb, var(--feature-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--feature-accent) 18%, rgba(255, 255, 255, 0.08));
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case .icon-button {
+  border-color: var(--wyatt-dark-line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--wyatt-dark-text);
+}
+
+.dialog-content--use-case .step-list svg {
+  color: color-mix(in srgb, var(--feature-accent) 74%, white);
 }
 
 .dialog-sidebar {
@@ -1283,8 +1456,7 @@ p {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--feature-accent) 18%, white);
 }
 
-.pill-feature,
-.comparison-feature-pill {
+.pill-feature {
   border: 1px solid color-mix(in srgb, var(--feature-accent) 24%, white);
   background: color-mix(in srgb, var(--feature-accent) 10%, white);
   color: color-mix(in srgb, var(--feature-accent) 72%, var(--text));
@@ -1355,7 +1527,6 @@ p {
 
   .section-heading,
   .controls-panel__top,
-  .comparison-panel__header,
   .feature-section__header,
   .role-overview__header,
   .role-overview__title,

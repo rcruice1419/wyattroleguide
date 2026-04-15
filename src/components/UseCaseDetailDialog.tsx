@@ -29,7 +29,7 @@ export function UseCaseDetailDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
         <Dialog.Content
-          className="dialog-content"
+          className="dialog-content dialog-content--use-case"
           style={
             {
               "--feature-accent": feature?.color ?? "var(--accent-sky)"
@@ -38,7 +38,7 @@ export function UseCaseDetailDialog({
         >
           <div className="dialog-header">
             <div>
-              <div className="eyebrow">Wyatt use case detail</div>
+              <div className="eyebrow">Full detail view</div>
               <Dialog.Title>{useCase?.title}</Dialog.Title>
               <Dialog.Description>{useCase?.shortDescription}</Dialog.Description>
             </div>

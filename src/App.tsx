@@ -4,7 +4,6 @@ import { ArrowRight, LayoutDashboard, Sparkles, Users2 } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 
-import { ComparisonPanel } from "./components/ComparisonPanel";
 import { FeatureLibrary } from "./components/FeatureLibrary";
 import { OnboardingQuiz } from "./components/OnboardingQuiz";
 import { RoleCard } from "./components/RoleCard";
@@ -24,10 +23,6 @@ function App() {
   const [activeTab, setActiveTab] = useState("by-role");
   const [activeRoleId, setActiveRoleId] = useState<RoleId>(defaultRoleId);
   const [previewRoleId, setPreviewRoleId] = useState<RoleId | null>(null);
-  const [comparedRoleIds, setComparedRoleIds] = useState<RoleId[]>([
-    "project-manager",
-    "cfo-finance-leader"
-  ]);
   const [searchValue, setSearchValue] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<WyattFeatureId[]>([
     ...featureIds
@@ -150,10 +145,6 @@ function App() {
     [roleLookup, searchValue, selectedFeatures]
   );
 
-  const comparedRoles = roleProfiles.filter((role) =>
-    comparedRoleIds.includes(role.id)
-  );
-
   const favoriteUseCases = favoriteUseCaseIds
     .map((useCaseId) => useCaseLookup[useCaseId])
     .filter(Boolean);
@@ -206,22 +197,6 @@ function App() {
     setSearchValue("");
     setSelectedFeatures([...featureIds]);
     trackEvent("filters_cleared");
-  };
-
-  const toggleCompareRole = (roleId: RoleId) => {
-    setComparedRoleIds((current) => {
-      if (current.includes(roleId)) {
-        trackEvent("role_compare_removed", { roleId });
-        return current.filter((value) => value !== roleId);
-      }
-
-      if (current.length >= 3) {
-        return current;
-      }
-
-      trackEvent("role_compare_added", { roleId });
-      return [...current, roleId];
-    });
   };
 
   const toggleFavoriteUseCase = (useCaseId: string) => {
@@ -311,13 +286,13 @@ function App() {
 
         <div className="layout-grid">
           <main className="main-column">
-            <section className="panel">
+            <section className="panel role-selector-panel">
               <div className="section-heading">
                 <div>
                   <div className="eyebrow">Role selector</div>
                   <h2>Choose a role to personalize the view</h2>
                 </div>
-                <p>Preview any role, then click to lock it in. Compare up to three side by side.</p>
+                <p>Hover to preview. Click to select.</p>
               </div>
 
               <div className="role-preview-strip">
@@ -326,13 +301,12 @@ function App() {
                     {previewRoleId ? "Previewing role" : "Selected role"}
                   </span>
                   <h3>{previewRole.title}</h3>
-                  <p>{previewRole.summary}</p>
                 </div>
                 <div className="role-preview-strip__meta">
                   <div className="role-preview-strip__group">
-                    <span className="eyebrow">Primary concerns</span>
+                    <span className="eyebrow">Cares about</span>
                     <div className="tag-row">
-                      {previewRole.whatTheyCareAbout.slice(0, 3).map((item) => (
+                      {previewRole.whatTheyCareAbout.slice(0, 2).map((item) => (
                         <span className="pill pill-subtle" key={item}>
                           {item}
                         </span>
@@ -340,9 +314,9 @@ function App() {
                     </div>
                   </div>
                   <div className="role-preview-strip__group">
-                    <span className="eyebrow">Use case mix</span>
+                    <span className="eyebrow">Wyatt mix</span>
                     <div className="tag-row">
-                      {roleFeatureCounts[previewRole.id].map((item) => (
+                      {roleFeatureCounts[previewRole.id].slice(0, 4).map((item) => (
                         <span className="pill" key={item.label}>
                           {item.label}
                           <strong>{item.count}</strong>
@@ -351,7 +325,7 @@ function App() {
                     </div>
                   </div>
                   <div className="role-preview-strip__group role-preview-strip__group--cta">
-                    <span className="eyebrow">Best starting point</span>
+                    <span className="eyebrow">Start with</span>
                     <strong>
                       {
                         useCaseLookup[
@@ -366,11 +340,7 @@ function App() {
               <div className="role-grid">
                 {roleProfiles.map((role) => (
                   <RoleCard
-                    compareDisabled={
-                      comparedRoleIds.length >= 3 && !comparedRoleIds.includes(role.id)
-                    }
                     featureCounts={roleFeatureCounts[role.id]}
-                    isCompared={comparedRoleIds.includes(role.id)}
                     isFocused={role.id === activeRoleId}
                     key={role.id}
                     onFocus={(roleId) => {
@@ -379,7 +349,6 @@ function App() {
                       trackEvent("role_focused", { roleId });
                     }}
                     onPreview={setPreviewRoleId}
-                    onToggleCompare={toggleCompareRole}
                     role={role}
                     useCaseCount={roleUseCases[role.id].length}
                   />
@@ -425,12 +394,6 @@ function App() {
                     useCaseLookup[activeRole.startingPoint.highestValueUseCaseId]
                   }
                   role={activeRole}
-                />
-
-                <ComparisonPanel
-                  featureLookup={featureLookup}
-                  roles={comparedRoles}
-                  useCaseLookup={useCaseLookup}
                 />
 
                 <section className="panel">
@@ -484,6 +447,11 @@ function App() {
                                     <span className="compact-use-case__meta">
                                       {useCase.frequency} / {useCase.valueLevel} value
                                     </span>
+                                    {spotlightUseCase?.id === useCase.id ? (
+                                      <span className="compact-use-case__selected">
+                                        Selected
+                                      </span>
+                                    ) : null}
                                   </button>
                                 ))}
                               </div>
@@ -503,7 +471,7 @@ function App() {
                         >
                           <div className="use-case-spotlight__header">
                             <div>
-                              <span className="eyebrow">Selected use case</span>
+                              <span className="eyebrow">Inline preview</span>
                               <h3>{spotlightUseCase.title}</h3>
                             </div>
                             <span className="pill pill-feature">
@@ -548,7 +516,7 @@ function App() {
                               onClick={() => openUseCase(spotlightUseCase)}
                               type="button"
                             >
-                              View full detail
+                              Open full detail
                               <ArrowRight size={14} />
                             </button>
                             <button

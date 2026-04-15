@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Plus, ScanSearch } from "lucide-react";
 
 import { roleIcons } from "../lib/iconMaps";
 import type { RoleProfile } from "../types";
@@ -9,11 +8,8 @@ interface RoleCardProps {
   useCaseCount: number;
   featureCounts: Array<{ label: string; count: number }>;
   isFocused: boolean;
-  isCompared: boolean;
-  compareDisabled: boolean;
   onFocus: (roleId: RoleProfile["id"]) => void;
   onPreview: (roleId: RoleProfile["id"] | null) => void;
-  onToggleCompare: (roleId: RoleProfile["id"]) => void;
 }
 
 export function RoleCard({
@@ -21,11 +17,8 @@ export function RoleCard({
   useCaseCount,
   featureCounts,
   isFocused,
-  isCompared,
-  compareDisabled,
   onFocus,
-  onPreview,
-  onToggleCompare
+  onPreview
 }: RoleCardProps) {
   const Icon = roleIcons[role.id];
 
@@ -47,25 +40,17 @@ export function RoleCard({
         <div className="role-card__header">
           <div className="role-card__title-wrap">
             <div className="role-card__icon-shell">
-              <Icon size={18} />
+              <Icon size={16} />
             </div>
             <div className="role-card__meta">
               <h3>{role.shortTitle}</h3>
+              <span>{useCaseCount} use cases</span>
             </div>
           </div>
-          {isFocused ? <span className="role-card__selected">Selected</span> : null}
-        </div>
-
-        <div className="role-card__highlights">
-          {role.whatTheyCareAbout.slice(0, 2).map((item) => (
-            <span className="role-card__highlight" key={item}>
-              {item}
-            </span>
-          ))}
         </div>
 
         <div className="role-card__feature-snapshot">
-          {featureCounts.slice(0, 3).map((item) => (
+          {featureCounts.slice(0, 4).map((item) => (
             <span className="role-card__feature-pill" key={item.label}>
               {item.label}
               <strong>{item.count}</strong>
@@ -73,24 +58,6 @@ export function RoleCard({
           ))}
         </div>
       </button>
-
-      <div className="role-card__footer">
-        <div className="role-card__stats">
-          <span className="pill pill-subtle">
-            <ScanSearch size={14} />
-            {useCaseCount} use cases
-          </span>
-        </div>
-        <button
-          className={`secondary-action role-card__compare ${isCompared ? "is-active" : ""}`}
-          disabled={compareDisabled}
-          onClick={() => onToggleCompare(role.id)}
-          type="button"
-        >
-          <Plus size={14} />
-          {isCompared ? "Remove" : "Compare"}
-        </button>
-      </div>
     </motion.article>
   );
 }
